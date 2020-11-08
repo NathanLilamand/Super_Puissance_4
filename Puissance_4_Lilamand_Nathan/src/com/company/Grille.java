@@ -64,7 +64,7 @@ public class Grille {
     }
 
     // show grid
-    private final int gridColumns = 7, gridRows =6; // the value can't change
+    private final int gridColumns = 7, gridRows =6; // the value can't change, if you want change the grid ans add columns or rows, you don't have to change every integer in the code
 
     public int getGridColumnsCount(){ return gridColumns; }
 
@@ -183,7 +183,7 @@ public class Grille {
                         // on verifie les diagonales haut gauche
 
                         for (int u = 1; u < 4; u++) { // on va faire 3 tour de boucle
-                            if (y <= 2 && i >= 3 && tab[i + u][y + u].presenceJeton()) {
+                            if (y <= 2 && i >= 3 && tab[i - u][y + u].presenceJeton()) {
                                 if (tab[i + 1][y + 1].lireCouleurDuJeton().equals(lejoueur.Couleur)) {
                                     vainqueur++;
                                 } else {

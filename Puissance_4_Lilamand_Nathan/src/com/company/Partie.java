@@ -7,6 +7,11 @@ public class Partie {
     Joueur[] ListeJoueur = new Joueur[2];
     Joueur joueurCourent;
     int d; // on va l'utiliser dans le deroulement de la parte, permet de sauter une partie du code au premier tour dans le do while (l'inverseur de joueur pour le joueur actif)
+    int derniereLigneDisponible; //on va l'utiliser dans une action ajouter un jeton pour stocker l'entier qui correspond à derniereLigneDisponible
+    int colonnechoisie; //on va l'utiliser dans une action ajouter un jeton
+    Jeton jeto;         //on va l'utiliser dans une action ajouter un jeton
+    int colone; // on va l'utiliser pour recuperer des jeton dans case 2
+    int ligne; // on va l'utiliser pour recuperer des jeton dans case 2
 
     public void initialiserPartie() {
         Grille newgrid = new Grille(); // on creer une nouvelle grille de reference newgrid
@@ -105,26 +110,33 @@ public class Partie {
             // mis en place d'un switch case pour diffrencier les actions du joueur actif:
             switch (actionchoisie) {
                 case 1: {
+                    // on stocke la valeur de la collone choisie
                     System.out.println(joueuractif.Nom + ", dans quel colonne voulez vous placez votre jeton?");
-                    int colonnechoisie = Integer.parseInt(sc.next()); // permet de demender un entier (convertir une chaine de caractere en entier)
-                    Jeton jeto = joueuractif.ListeJeton[joueuractif.positionDernierDuJetonNonNull()];
+                    colonnechoisie = Integer.parseInt(sc.next()); // permet de demender un entier (convertir une chaine de caractere en entier)
+
+                    // on stocke je jeton a mettre dans la variable jeto puis on suprime le referencement de ce heton dans la liste
+                    jeto = joueuractif.ListeJeton[joueuractif.positionDernierDuJetonNonNull()];
                     joueuractif.ListeJeton[joueuractif.positionDernierDuJetonNonNull()] = null; // on lui enleve un jeton de sa liste (enfin je croi a voir quand on recupere les jeton
 
+                    // on stocke la derniere ligne disponible pour ne pas quel soit changer au cour de l'action ajouter jeton
+                    derniereLigneDisponible = newgrid.derniereLigneDisponible(colonnechoisie);
+
+
                     // on va verifier si la cellules qu'il a choisi contient un trou noir
-                    if (!newgrid.tab[colonnechoisie][newgrid.derniereLigneDisponible(colonnechoisie)].presenceTrouNoir()) {
-                        System.out.println(newgrid.derniereLigneDisponible(colonnechoisie));
-                        if (!newgrid.ajouterJetonDansColone(jeto, colonnechoisie)){
+                    if (!newgrid.tab[colonnechoisie][derniereLigneDisponible].presenceTrouNoir()) {
+                        System.out.println(derniereLigneDisponible);
+                        System.out.println("10");
+                        if (!newgrid.ajouterJetonDansColone(jeto, colonnechoisie)) {
                             System.out.println("il n'y avait plus de place dans cette colone, soyez plus attentif la prochaine fois! vous passer votre tour");
                         }
-
-
+                        System.out.println("20");
                     } else {
-                        newgrid.tab[colonnechoisie][newgrid.derniereLigneDisponible(colonnechoisie)].suprimerTrouNoir();
+                        newgrid.tab[colonnechoisie][derniereLigneDisponible].suprimerTrouNoir();
                     }
-
+                    System.out.println("30");
                     // on va verifier si la cellules qu'il a choisi contient un desintegrateur
-                    if (newgrid.tab[colonnechoisie][newgrid.derniereLigneDisponible(colonnechoisie)].presenceDesintegrateur()) {
-                        newgrid.tab[colonnechoisie][newgrid.derniereLigneDisponible(colonnechoisie)].suprimerDesintegrateur();
+                    if (newgrid.tab[colonnechoisie][derniereLigneDisponible].presenceDesintegrateur()) {
+                        newgrid.tab[colonnechoisie][derniereLigneDisponible].suprimerDesintegrateur();
                         joueuractif.nombreDesintegrateurs++;
                     }
 
@@ -132,8 +144,7 @@ public class Partie {
                 }
                 break;
                 case 2: {
-                    int colone;
-                    int ligne;
+
                     do {
                         System.out.println("quel jeton voulez vous récupérer ?");
                         System.out.println("entrer la colone:");
@@ -175,9 +186,11 @@ public class Partie {
 
 
             }
+            System.out.println("la cellule [6][0] contient un jeton: "
+                    + newgrid.tab[6][0].presenceJeton() + " la couleur est: " + newgrid.tab[6][0].lireCouleurDuJeton()
+                    + " et il y a un trou noir? : " + newgrid.tab[6][0].presenceTrouNoir());
         }
-        while (!newgrid.etreGagnantePourJoueur(joueuractif) || newgrid.etreRemplie() || !newgrid.etreGagnantePourJoueur(joueurnonactif))
-                ;
+        while (!newgrid.etreGagnantePourJoueur(joueuractif) || newgrid.etreRemplie() || !newgrid.etreGagnantePourJoueur(joueurnonactif));
         if (newgrid.etreRemplie()) {
             System.out.println("Partie nul");
         }
@@ -211,14 +224,13 @@ public class Partie {
         }
     }
 
-    private void tasserGrille2(Grille newgrid, int colone) {
+    public void tasserGrille2(Grille newgrid, int colone) {
         for (int i = 0; i < 5; i++) {
-            if (!newgrid.tab[colone][i].presenceJeton()){
-                Jeton token = newgrid.tab[colone][i+1].jetonCourant;
+            if (!newgrid.tab[colone][i].presenceJeton()) {
+                Jeton token = newgrid.tab[colone][i + 1].jetonCourant;
                 newgrid.tab[colone][i].affecterJeton(token);
-                newgrid.tab[colone][i+1].suprimerJeton();
-            }else {
-                break;
+                newgrid.tab[colone][i + 1].suprimerJeton();
+            } else {
             }
         }
     }
