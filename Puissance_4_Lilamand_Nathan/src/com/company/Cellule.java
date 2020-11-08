@@ -119,7 +119,3 @@ public class Cellule {
 }
 
 
-/*
-jeton cellule grille joueur partie
- */
-
