@@ -186,9 +186,6 @@ public class Partie {
 
 
             }
-            System.out.println("la cellule [6][0] contient un jeton: "
-                    + newgrid.tab[6][0].presenceJeton() + " la couleur est: " + newgrid.tab[6][0].lireCouleurDuJeton()
-                    + " et il y a un trou noir? : " + newgrid.tab[6][0].presenceTrouNoir());
         }
         while (!newgrid.etreGagnantePourJoueur(joueuractif) || newgrid.etreRemplie() || !newgrid.etreGagnantePourJoueur(joueurnonactif));
         if (newgrid.etreRemplie()) {

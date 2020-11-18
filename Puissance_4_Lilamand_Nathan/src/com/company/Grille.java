@@ -84,7 +84,7 @@ public class Grille {
         gridBuild.append(separationLine).append("\n");
 
         for(int i = rows; i > 0 ; i--){
-            for(int j = 0; i<columns ; i++){
+            for(int j = 0; j<columns ; j++){
                 gridBuild.append("| ").append(getCell(j, i-1).getSymbol()).append(" ");
             }
             gridBuild.append("|\n").append(separationLine).append("\n");
