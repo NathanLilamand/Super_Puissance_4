@@ -125,15 +125,15 @@ public class Partie {
                     // on va verifier si la cellules qu'il a choisi contient un trou noir
                     if (!newgrid.tab[colonnechoisie][derniereLigneDisponible].presenceTrouNoir()) {
                         System.out.println(derniereLigneDisponible);
-                        System.out.println("10");
+
                         if (!newgrid.ajouterJetonDansColone(jeto, colonnechoisie)) {
                             System.out.println("il n'y avait plus de place dans cette colone, soyez plus attentif la prochaine fois! vous passer votre tour");
                         }
-                        System.out.println("20");
+
                     } else {
                         newgrid.tab[colonnechoisie][derniereLigneDisponible].suprimerTrouNoir();
                     }
-                    System.out.println("30");
+
                     // on va verifier si la cellules qu'il a choisi contient un desintegrateur
                     if (newgrid.tab[colonnechoisie][derniereLigneDisponible].presenceDesintegrateur()) {
                         newgrid.tab[colonnechoisie][derniereLigneDisponible].suprimerDesintegrateur();
